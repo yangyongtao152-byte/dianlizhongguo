@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/plugin-manifest.v1.json",
+  "title": "NEXUS Plugin Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "version", "apiVersion", "entry", "permissions", "contributes"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*(\\.[a-z][a-z0-9-]*)+$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+([+-][0-9A-Za-z.-]+)?$" },
+    "apiVersion": { "const": "1" },
+    "entry": { "type": "string", "pattern": "^\\./" },
+    "permissions": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "contributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "widgets": { "type": "array", "items": { "$ref": "#/$defs/widget" } },
+        "actions": { "type": "array", "items": { "$ref": "#/$defs/action" } },
+        "dataSources": { "type": "array", "items": { "$ref": "#/$defs/contribution" } },
+        "agentAdapters": { "type": "array", "items": { "$ref": "#/$defs/contribution" } },
+        "themes": { "type": "array", "items": { "$ref": "#/$defs/contribution" } }
+      }
+    }
+  },
+  "$defs": {
+    "contribution": {
+      "type": "object",
+      "required": ["id"],
+      "properties": { "id": { "type": "string", "minLength": 1 }, "entry": { "type": "string" } },
+      "additionalProperties": true
+    },
+    "widget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "entry", "defaultSize"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "entry": { "type": "string" },
+        "defaultSize": { "$ref": "#/$defs/size" },
+        "minSize": { "$ref": "#/$defs/size" },
+        "maxSize": { "$ref": "#/$defs/size" },
+        "settingsSchema": { "type": "object" }
+      }
+    },
+    "size": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["w", "h"],
+      "properties": { "w": { "type": "integer", "minimum": 1, "maximum": 12 }, "h": { "type": "integer", "minimum": 1, "maximum": 24 } }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "handler"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "handler": { "type": "string" },
+        "voiceExamples": { "type": "array", "items": { "type": "string" } },
+        "inputSchema": { "type": "object" }
+      }
+    }
+  }
+}

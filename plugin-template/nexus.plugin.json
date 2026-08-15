@@ -1,0 +1,28 @@
+{
+  "$schema": "../schemas/plugin-manifest.schema.json",
+  "id": "com.example.sample-widget",
+  "name": "Sample Widget",
+  "version": "1.0.0",
+  "apiVersion": "1",
+  "entry": "./dist/index.js",
+  "permissions": ["storage:plugin"],
+  "contributes": {
+    "widgets": [
+      {
+        "id": "sample.overview",
+        "title": "示例板块",
+        "entry": "./dist/widget.js",
+        "defaultSize": { "w": 4, "h": 3 },
+        "minSize": { "w": 2, "h": 2 }
+      }
+    ],
+    "actions": [
+      {
+        "id": "sample.refresh",
+        "title": "刷新示例数据",
+        "handler": "refreshData",
+        "voiceExamples": ["刷新示例板块"]
+      }
+    ]
+  }
+}

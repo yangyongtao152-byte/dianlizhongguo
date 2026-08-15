@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["arkEndpointId", "speechAppId", "asrResourceId", "ttsVoiceType", "ttsResourceId", "ttsUrl", "realtimeModel", "realtimeVoice", "realtimeUrl"],
+  "properties": {
+    "arkEndpointId": { "type": "string", "minLength": 1 },
+    "speechAppId": { "type": "string", "minLength": 1 },
+    "asrResourceId": { "type": "string", "default": "volc.bigasr.sauc.duration" },
+    "asrStreamMode": { "enum": [0, 1, 2], "default": 2 },
+    "vadSilenceMs": { "type": "integer", "minimum": 300, "maximum": 5000, "default": 600 },
+    "ttsVoiceType": { "type": "string", "minLength": 1 },
+    "ttsModel": { "type": "string", "default": "seed-tts-2.0-standard" },
+    "ttsResourceId": { "enum": ["seed-tts-2.0", "seed-icl-2.0"], "default": "seed-tts-2.0" },
+    "ttsUrl": {
+      "const": "wss://openspeech.bytedance.com/api/v3/tts/bidirection",
+      "default": "wss://openspeech.bytedance.com/api/v3/tts/bidirection"
+    },
+    "ttsEncoding": { "enum": ["pcm", "mp3", "ogg_opus", "wav"], "default": "pcm" },
+    "ttsSampleRate": { "enum": [8000, 16000, 22050, 24000, 32000, 44100, 48000], "default": 24000 },
+    "realtimeModel": { "const": "1.2.6.1", "default": "1.2.6.1" },
+    "realtimeVoice": { "type": "string", "minLength": 1, "default": "zh_female_vv_jupiter_bigtts" },
+    "realtimeUrl": {
+      "const": "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue",
+      "default": "wss://openspeech.bytedance.com/api/v3/duplex/realtime/dialogue"
+    },
+    "realtimeInputAudio": { "enum": ["pcm", "speech_opus"], "default": "pcm" },
+    "realtimeOutputAudio": { "enum": ["pcm_s16le", "ogg_opus"], "default": "pcm_s16le" }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hermes NEXUS Orchestrator"
+  short_description: "Route complex voice tasks through a guarded Hermes agent"
+  default_prompt: "Use $hermes-nexus-orchestrator to safely plan and execute this complex task."

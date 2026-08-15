@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/provider-config.v1.json",
+  "title": "NEXUS Provider Configuration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["providers", "routes"],
+  "properties": {
+    "providers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "adapter", "enabled", "config"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "enum": ["llm", "asr", "tts", "realtime-voice"] },
+          "adapter": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "config": { "type": "object" },
+          "secretRefs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability", "primary", "fallbacks", "timeoutMs"],
+        "properties": {
+          "capability": { "enum": ["llm", "asr", "tts", "realtime-voice"] },
+          "primary": { "type": "string" },
+          "fallbacks": { "type": "array", "items": { "type": "string" } },
+          "timeoutMs": { "type": "integer", "minimum": 1000, "maximum": 120000 }
+        }
+      }
+    }
+  }
+}

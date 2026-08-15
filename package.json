@@ -1,0 +1,113 @@
+{
+  "name": "nexus-voice-console",
+  "version": "0.4.9",
+  "private": true,
+  "description": "A modular realtime voice agent command center",
+  "author": "NEXUS",
+  "main": "desktop/electron-main.mjs",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vinext dev",
+    "build": "vinext build",
+    "start": "vinext start",
+    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test:desktop-layout": "npm run desktop:build:web && electron tests/desktop-layout-smoke.mjs",
+    "test:provider-chat": "npm run desktop:build:web && electron tests/provider-chat-smoke.mjs",
+    "test:system-metrics": "electron tests/system-metrics-smoke.mjs",
+    "test:harness": "node --test tests/harness-supervisor-smoke.mjs",
+    "test:harness:packaged": "node --test tests/packaged-harness-smoke.mjs",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern dist-desktop --ignore-pattern release --ignore-pattern .next",
+    "db:generate": "drizzle-kit generate",
+    "desktop:dev": "vite --config desktop.vite.config.ts",
+    "desktop:build:web": "vite build --config desktop.vite.config.ts",
+    "desktop:open": "electron .",
+    "prepare:harness-runtime": "node scripts/prepare-harness-runtime.mjs",
+    "desktop:pack": "npm run desktop:build:web && npm run prepare:harness-runtime && electron-builder --dir",
+    "desktop:build:win": "npm run desktop:build:web && npm run prepare:harness-runtime && electron-builder --win",
+    "desktop:build:mac": "npm run desktop:build:web && npm run prepare:harness-runtime && electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.nexus.voiceconsole",
+    "productName": "NEXUS Voice Console",
+    "npmRebuild": false,
+    "extraResources": [
+      {
+        "from": "harness-runtime-stage",
+        "to": "h",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist-desktop/**/*",
+      "desktop/electron-main.mjs",
+      "desktop/preload.cjs",
+      "desktop/harness-supervisor.mjs",
+      "desktop/realtime-voice.mjs",
+      "desktop/system-metrics.mjs",
+      "package.json",
+      "!node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "NEXUS-Voice-Console-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "include": "build/installer.nsh"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "artifactName": "NEXUS-Voice-Console-${version}-${arch}.${ext}"
+    },
+    "dmg": {
+      "title": "NEXUS Voice Console ${version}"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.1.0-rc.6",
+    "drizzle-orm": "0.45.2",
+    "lunar-javascript": "^1.7.7",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-grid-layout": "^2.2.4"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "drizzle-kit": "0.31.10",
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "react-server-dom-webpack": "19.2.6",
+    "tailwindcss": "4.2.1",
+    "typescript": "5.9.3",
+    "vinext": "0.0.50",
+    "vite": "8.0.13",
+    "wrangler": "4.92.0"
+  },
+  "type": "module"
+}

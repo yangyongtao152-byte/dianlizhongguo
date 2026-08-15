@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/workspace.v1.json",
+  "title": "NEXUS Workspace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "shortName", "theme", "widgets"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "shortName": { "type": "string", "minLength": 1 },
+    "theme": { "type": "string" },
+    "widgets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["instanceId", "pluginId", "widgetId", "x", "y", "w", "h"],
+        "properties": {
+          "instanceId": { "type": "string" },
+          "pluginId": { "type": "string" },
+          "widgetId": { "type": "string" },
+          "x": { "type": "integer", "minimum": 0, "maximum": 11 },
+          "y": { "type": "integer", "minimum": 0 },
+          "w": { "type": "integer", "minimum": 1, "maximum": 12 },
+          "h": { "type": "integer", "minimum": 1, "maximum": 24 },
+          "settings": { "type": "object" }
+        }
+      }
+    }
+  }
+}
